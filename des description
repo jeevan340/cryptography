@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <stdint.h>
+
+int initial_permutation[] = { /* ... */ };
+int inverse_permutation[] = { /* ... */ };
+
+uint64_t des_decrypt(uint64_t ciphertext, uint64_t key) {
+    uint64_t plaintext = 0;
+    int i;
+    for ( i = 0; i < 64; i++) {
+        int bit = (ciphertext >> (63 - initial_permutation[i])) & 1;
+        plaintext |= (uint64_t)(bit << i);
+    }
+    return plaintext;
+}
+
+int main() {
+    uint64_t ciphertext = 0x0123456789ABCDEF;
+    uint64_t key = 0x133457799BBCDFF1;
+    uint64_t plaintext = des_decrypt(ciphertext, key);
+    printf("Decrypted plaintext: 0x%llx\n", plaintext);
+    return 0;
+}
