@@ -1,0 +1,24 @@
+def decrypt_monoalphabetic(ciphertext, key):
+    decrypted_text = ""
+    for char in ciphertext:
+        if char.isalpha():
+            is_upper = char.isupper()
+            char = char.upper()
+            decrypted_char = key[char] if char in key else char
+            decrypted_char = decrypted_char.lower() if not is_upper else decrypted_char
+            decrypted_text += decrypted_char
+        else:
+            decrypted_text += char
+    return decrypted_text
+key = {
+    'A': 'M', 'B': 'O', 'C': 'N', 'D': 'K', 'E': 'L',
+    'F': 'J', 'G': 'I', 'H': 'H', 'I': 'G', 'J': 'F',
+    'K': 'D', 'L': 'E', 'M': 'A', 'N': 'C', 'O': 'B',
+    'P': 'Z', 'Q': 'Y', 'R': 'X', 'S': 'W', 'T': 'V',
+    'U': 'U', 'V': 'T', 'W': 'S', 'X': 'R', 'Y': 'Q',
+    'Z': 'P'
+}
+ciphertext = "Gv rwtlmt, gv rwtlmt, ybjsvi pvok bl jvtfei"
+decrypted_message = decrypt_monoalphabetic(ciphertext, key)
+print("Ciphertext:", ciphertext)
+print("Decrypted message:", decrypted_message)
