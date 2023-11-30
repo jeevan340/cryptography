@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+int modExp(int base, int exp, int mod) {
+    int result = 1;
+    while (exp > 0) {
+        if (exp % 2 == 1) {
+            result = (result * base) % mod;
+        }
+        base = (base * base) % mod;
+        exp /= 2;
+    }
+    return result;
+}
+
+int main() {
+    // Key generation
+    int p = 61, q = 53;
+    int n = p * q;
+    int phi = (p - 1) * (q - 1);
+    int e = 65537;
+    int d = 0;
+    while ((d * e) % phi != 1) {
+        d++;
+    }
+
+    // Message
+    int message = 10;
+
+    // Encryption
+    int ciphertext = modExp(message, e, n);
+
+    // Decryption
+    int decryptedMessage = modExp(ciphertext, d, n);
+
+    // Display results
+    printf("Original Message: %d\n", message);
+    printf("Encrypted Message: %d\n", ciphertext);
+    printf("Decrypted Message: %d\n", decryptedMessage);
+
+    return 0;
+}
