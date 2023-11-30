@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#define A 3
+#define B 5
+char encryptChar(char plainChar) {
+    if (isalpha(plainChar)) {
+        char encryptedChar = (A * plainChar + B) % 256;
+        return encryptedChar;
+    }
+    return plainChar; 
+}
+char decryptChar(char cipherChar) {
+    if (isalpha(cipherChar)) {
+        int A_inverse;
+        for (A_inverse = 0; A_inverse < 256; A_inverse++) {
+            if ((A * A_inverse) % 256 == 1) {
+                break;
+            }
+        }
+        char decryptedChar = (A_inverse * (cipherChar - B + 256)) % 256;
+        return decryptedChar;
+    }
+    return cipherChar;
+}
+void encryptCounterMode(const char *plaintext, char *ciphertext) {
+    for (int i = 0; plaintext[i] != '\0'; i++) {
+        ciphertext[i] = encryptChar(plaintext[i] + i); 
+    }
+}
+void decryptCounterMode(const char *ciphertext, char *decryptedtext) {
+    for (int i = 0; ciphertext[i] != '\0'; i++) {
+        decryptedtext[i] = decryptChar(ciphertext[i]) - i; 
+    }
+}
+int main() {
+    char plaintext[] = "HelloWorld";
+    char ciphertext[sizeof(plaintext)] = {0};
+    char decryptedtext[sizeof(plaintext)] = {0};
+    encryptCounterMode(plaintext, ciphertext);
+    printf("Encrypted Text: %s\n", ciphertext);
+    decryptCounterMode(ciphertext, decryptedtext);
+    printf("Decrypted Text: %s\n", decryptedtext);
+
+    return 0;
+}
