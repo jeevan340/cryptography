@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <stdint.h>
+static const int initial_permutation[] = { /* ... */ };
+static void generate_subkeys(uint64_t key, uint64_t subkeys[16]) {
+  }
+  static uint64_t des_round(uint64_t block, uint64_t subkey) {
+   
+}
+
+static uint64_t initial_permute(uint64_t data) {
+   
+}
+
+static uint64_t final_permute(uint64_t data) {
+   
+}
+static uint64_t des_cbc_encrypt(uint64_t plaintext, uint64_t iv, uint64_t key) {
+    uint64_t subkeys[16];
+    generate_subkeys(key, subkeys);
+
+    uint64_t ciphertext = 0;
+    uint64_t previous_block = iv;
+
+    plaintext = initial_permute(plaintext);
+int round;
+    for ( round = 0; round < 16; round++) {
+        uint64_t input_block = plaintext ^ previous_block;
+        uint64_t round_output = des_round(input_block, subkeys[round]);
+        previous_block = round_output;
+    }
+
+    ciphertext = ((previous_block & 0x00000000FFFFFFFF) << 32) | ((previous_block & 0xFFFFFFFF00000000) >> 32);
+
+    ciphertext = final_permute(ciphertext);
+
+    return ciphertext;
+}
+
+int main() {
+    uint64_t key = 0x133457799BBCDFF1;
+    uint64_t iv = 0x0123456789ABCDEF;
+    uint64_t plaintext = 0x0123456789ABCDEF;
+
+    uint64_t ciphertext = des_cbc_encrypt(plaintext, iv, key);
+
+    printf("Plaintext: 0x%016lX\n", plaintext);
+    printf("Ciphertext: 0x%016lX\n", ciphertext);
+
+    return 0;
+}
