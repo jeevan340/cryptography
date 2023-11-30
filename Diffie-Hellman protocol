@@ -1,0 +1,23 @@
+#include <stdio.h>
+
+long long modExp(long long base, long long exp, long long mod) {
+    long long result = 1;
+    while (exp) {
+        if (exp % 2) result = result * base % mod;
+        base = base * base % mod;
+        exp /= 2;
+    }
+    return result;
+}
+
+int main() {
+    long long q = 23, a = 5;
+    long long x_Alice = 6, x_Bob = 15;
+
+    long long sharedKey_Alice = modExp(a, x_Alice, q);
+    long long sharedKey_Bob = modExp(a, x_Bob, q);
+
+    printf("Alice's Key: %lld\nBob's Key: %lld\n", modExp(sharedKey_Bob, x_Alice, q), modExp(sharedKey_Alice, x_Bob, q));
+
+    return 0;
+}
