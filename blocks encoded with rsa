@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+int gcd(int a, int b) {
+    if (b == 0) {
+        return a;
+    } else {
+        return gcd(b, a % b);
+    }
+}
+int findCommonFactor(int n, int plaintextBlock) {
+    int commonFactor = gcd(n, plaintextBlock);
+    return commonFactor;
+}
+int main() {
+    int n = 77; 
+    int e = 7;  
+    int plaintextBlock;
+    printf("Enter plaintext block: ");
+    scanf("%d", &plaintextBlock);
+    int commonFactor = findCommonFactor(n, plaintextBlock);
+    if (commonFactor > 1 && commonFactor < n) {
+        printf("Common factor found: %d\n", commonFactor);
+        int otherFactor = n / commonFactor;
+        int d; 
+        for (d = 2; d < n; d++) {
+            if ((d * e) % ((commonFactor - 1) * (otherFactor - 1)) == 1) {
+                break;
+            }
+        }
+        printf("Calculated private key: %d\n", d);
+    } else {
+        printf("No common factor found.\n");
+    }
+    return 0;
+}
