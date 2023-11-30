@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <string.h>
+
+void ecb_cipher(const unsigned char *input, unsigned char *output, const unsigned char *key) {
+	int i;
+    for ( i = 0; i < 8; i++)
+        output[i] = input[i] ^ key[i];
+}
+
+int main() {
+    unsigned char key[8] = "123";
+    unsigned char plaintext[8] = "1234";
+    unsigned char ciphertext[8], decrypted[8];
+
+    ecb_cipher(plaintext, ciphertext, key);
+
+    printf("Plaintext: %s\n", plaintext);
+    printf("Ciphertext: ");
+    int i;
+    for ( i = 0; i < 8; i++)
+        printf("%02X", ciphertext[i]);
+    printf("\n");
+
+    ecb_cipher(ciphertext, decrypted, key);
+
+    printf("Decrypted: %s\n", decrypted);
+
+    return 0;
+}
